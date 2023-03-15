@@ -1,4 +1,7 @@
+package fr.miage.bank.account;
+
 import fr.miage.bank.account.entity.Account;
+import fr.miage.bank.account.exception.AccountNotFoundException;
 import fr.miage.bank.account.resource.AccountResource;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +36,30 @@ public class AccountServiceBean implements AccountService {
             ar.save(a);
         }
         return a;
+    }
+
+    @Override
+    public float withdraw(String cardNumber, float amount) throws AccountNotFoundException {
+        Account a = ar.findByCardNumber(cardNumber);
+        if (a == null) {
+            throw new AccountNotFoundException("The account with the card number " + cardNumber + " does not exist!");
+        }
+
+        a.setBalance(a.getBalance() - amount);
+        ar.save(a);
+        return a.getBalance();
+    }
+
+    @Override
+    public float deposit(String cardNumber, float amount) throws AccountNotFoundException {
+        Account a = ar.findByCardNumber(cardNumber);
+        if (a == null) {
+            throw new AccountNotFoundException("The account with the card number " + cardNumber + " does not exist!");
+        }
+
+        a.setBalance(a.getBalance() + amount);
+        ar.save(a);
+        return a.getBalance();
     }
 
     private String generateAccountNumber() {
