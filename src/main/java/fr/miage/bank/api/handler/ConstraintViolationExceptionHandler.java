@@ -17,7 +17,7 @@ public class ConstraintViolationExceptionHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Map<String, List<String>>> handleValidationErrors(ConstraintViolationException ex) {
-        List<String> errors = ex.getConstraintViolations().stream().map(v -> v.getMessage()).collect(Collectors.toList());
+        List<String> errors = ex.getConstraintViolations().stream().map(v -> v.getMessage()).toList();
         return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 

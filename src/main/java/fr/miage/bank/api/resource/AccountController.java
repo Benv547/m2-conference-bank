@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ejb.EJB;
-import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 
 @RestController
