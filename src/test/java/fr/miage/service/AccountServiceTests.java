@@ -3,6 +3,7 @@ package fr.miage.service;
 
 import fr.miage.bank.account.AccountService;
 import fr.miage.bank.account.entity.Account;
+import fr.miage.bank.account.exception.AccountNotFoundException;
 import fr.miage.bank.account.resource.AccountResource;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -10,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import javax.validation.ConstraintViolationException;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
@@ -38,16 +42,46 @@ public class AccountServiceTests {
         account.setBalance(0);
         account.setAccountNumber("123");
 
-        // mock AccountResource
-        when(ar.findByEmail(Mockito.anyString()))
-                .thenReturn(account);
-
         // ACT
+        when(ar.findByEmail(Mockito.anyString()))
+                .thenReturn(null);
         Account a = as.get(email, firstname, lastname);
+
+        when(ar.findByEmail(Mockito.anyString()))
+                .thenReturn(a);
         Account a2 = as.get(email, firstname, lastname);
 
         // ASSERT
         assertTrue(a.getAccountNumber().equals(a2.getAccountNumber()));
     }
 
+    @Test
+    void withdraw_accountNotFound_ExpectException() {
+
+        // ARRANGE
+        String cardNumber = "123";
+        float amount = 100;
+
+        // ACT
+        when(ar.findByCardNumber(Mockito.anyString()))
+                .thenReturn(null);
+
+        // ASSERT
+        assertThrows(AccountNotFoundException.class, () -> as.withdraw(cardNumber, amount));
+    }
+
+    @Test
+    void deposit_accountNotFound_ExpectException() {
+
+        // ARRANGE
+        String cardNumber = "123";
+        float amount = 100;
+
+        // ACT
+        when(ar.findByCardNumber(Mockito.anyString()))
+                .thenReturn(null);
+
+        // ASSERT
+        assertThrows(AccountNotFoundException.class, () -> as.deposit(cardNumber, amount));
+    }
 }

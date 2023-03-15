@@ -6,11 +6,20 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Min;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "account", uniqueConstraints =
+        @UniqueConstraint(columnNames = {
+                "email",
+                "accountNumber",
+                "cardNumber"}
+        ))
 public class Account {
     @Id
     private String id;
@@ -22,5 +31,6 @@ public class Account {
     private String cardType;
     private String cardExpirationDate;
     private String cardCvv;
+    @Min(value = 0, message = "Balance must be positive")
     private float balance;
 }
