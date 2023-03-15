@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
+import java.security.SecureRandom;
+import java.util.Random;
 import java.util.UUID;
 
 @Singleton
@@ -17,6 +19,11 @@ public class AccountServiceBean implements AccountService {
 
     @Inject
     private AccountResource ar;
+
+    private static final String CARD_TYPE = "Visa";
+    private static final String DEFAULT_EXPIRATION_DATE = "01/2025";
+
+    private static final Random random = new SecureRandom();
 
     @Override
     public Account get(String email, String firstname, String lastname) {
@@ -63,26 +70,26 @@ public class AccountServiceBean implements AccountService {
     }
 
     private String generateAccountNumber() {
-        return "FR" + (int) (Math.random() * 1000000000);
+        return "FR" + (random.nextInt() * 1000000000);
     }
 
     private String generateCardNumber() {
-        String cardNumber = (int) (Math.random() * 9000 + 1000) + "";
-        cardNumber += (int) (Math.random() * 9000 + 1000) + "";
-        cardNumber += (int) (Math.random() * 9000 + 1000) + "";
-        cardNumber += (int) (Math.random() * 9000 + 1000) + "";
+        String cardNumber = (random.nextInt() * 9000 + 1000) + "";
+        cardNumber += (random.nextInt() * 9000 + 1000) + "";
+        cardNumber += (random.nextInt() * 9000 + 1000) + "";
+        cardNumber += (random.nextInt() * 9000 + 1000) + "";
         return cardNumber;
     }
 
     private String generateCardType() {
-        return "Visa";
+        return CARD_TYPE;
     }
 
     private String generateCardExpirationDate() {
-        return "12/2023";
+        return DEFAULT_EXPIRATION_DATE;
     }
 
     private String generateCardCvv() {
-        return (int) (Math.random() * 1000) + "";
+        return (random.nextInt() * 1000) + "";
     }
 }

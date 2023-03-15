@@ -11,12 +11,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
-import java.util.HashMap;
-
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.when;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AccountControllerTests {
@@ -36,7 +34,7 @@ public class AccountControllerTests {
         String id = response.getBody().asString();
         Response response2 = given().body(toJsonString(a1)).contentType(ContentType.JSON).when().get("/account").then().statusCode(HttpStatus.SC_OK).extract().response();
         String id2 = response2.getBody().asString();
-        assertThat(id, equalTo(id2));
+        assertEquals(id, id2);
     }
 
     private String toJsonString(Object r) throws Exception {
