@@ -26,22 +26,24 @@ public class AccountServiceBean implements AccountService {
     private static final Random random = new SecureRandom();
 
     @Override
-    public Account get(String email, String firstname, String lastname) {
+    public Account get(String email, String firstname, String lastname) throws AccountNotFoundException {
         Account a = ar.findByEmail(email);
         if (a == null) {
-            a = new Account();
-            a.setId(UUID.randomUUID().toString());
-            a.setEmail(email);
-            a.setFirstname(firstname);
-            a.setLastname(lastname);
-            a.setAccountNumber(generateAccountNumber());
-            a.setCardNumber(generateCardNumber());
-            a.setCardType(generateCardType());
-            a.setCardExpirationDate(generateCardExpirationDate());
-            a.setCardCvv(generateCardCvv());
-            a.setBalance(0);
-            ar.save(a);
+            throw new AccountNotFoundException("The account with the email " + email + " does not exist!");
         }
+        return a;
+    }
+
+    @Override
+    public Account create(Account a) {
+        a.setId(UUID.randomUUID().toString());
+        a.setAccountNumber(generateAccountNumber());
+        a.setCardNumber(generateCardNumber());
+        a.setCardType(generateCardType());
+        a.setCardExpirationDate(generateCardExpirationDate());
+        a.setCardCvv(generateCardCvv());
+        a.setBalance(0);
+        ar.save(a);
         return a;
     }
 
