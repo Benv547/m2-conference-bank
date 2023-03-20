@@ -3,6 +3,7 @@ package fr.miage.bank.api.resource;
 import fr.miage.bank.account.AccountService;
 import fr.miage.bank.account.entity.Account;
 import fr.miage.bank.account.entity.AccountInput;
+import fr.miage.bank.account.exception.AccountAlreadyExistException;
 import fr.miage.bank.account.exception.AccountNotFoundException;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.MediaType;
@@ -30,7 +31,7 @@ public class AccountController {
     }
 
     @PostMapping()
-    public Account create(@RequestBody @Valid AccountInput account) {
+    public Account create(@RequestBody @Valid AccountInput account) throws AccountAlreadyExistException {
         Account entity = new Account();
         entity.setEmail(account.getEmail());
         entity.setFirstname(account.getFirstname());
