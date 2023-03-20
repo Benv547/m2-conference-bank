@@ -28,9 +28,9 @@ public class AccountControllerTests {
     }
 
     @Test
-    void getTwiceAccount_isTheSame() throws Exception {
+    void postAndgetAccount_isTheSame() throws Exception {
         AccountInput a1 = new AccountInput("John", "Doe", "john@doe.fr");
-        Response response = given().body(toJsonString(a1)).contentType(ContentType.JSON).when().get("/account").then().statusCode(HttpStatus.SC_OK).extract().response();
+        Response response = given().body(toJsonString(a1)).contentType(ContentType.JSON).when().post("/account").then().statusCode(HttpStatus.SC_OK).extract().response();
         String id = response.getBody().asString();
         Response response2 = given().body(toJsonString(a1)).contentType(ContentType.JSON).when().get("/account").then().statusCode(HttpStatus.SC_OK).extract().response();
         String id2 = response2.getBody().asString();

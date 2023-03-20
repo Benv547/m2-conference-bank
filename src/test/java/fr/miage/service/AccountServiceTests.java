@@ -25,7 +25,7 @@ public class AccountServiceTests {
     AccountService as;
 
     @Test
-    void getTest_twoTry_ExpectTrue() {
+    void getTest_twoTry_ExpectTrue() throws AccountNotFoundException {
 
         // ARRANGE
         String email = "test@test.fr";
@@ -40,17 +40,15 @@ public class AccountServiceTests {
         account.setBalance(0);
         account.setAccountNumber("123");
 
+        ar.save(account);
+
         // ACT
         when(ar.findByEmail(Mockito.anyString()))
-                .thenReturn(null);
-        Account a = as.get(email, firstname, lastname);
-
-        when(ar.findByEmail(Mockito.anyString()))
-                .thenReturn(a);
+                .thenReturn(account);
         Account a2 = as.get(email, firstname, lastname);
 
         // ASSERT
-        assertTrue(a.getAccountNumber().equals(a2.getAccountNumber()));
+        assertTrue(account.getAccountNumber().equals(a2.getAccountNumber()));
     }
 
     @Test
