@@ -1,6 +1,7 @@
 package fr.miage.bank.account;
 
 import fr.miage.bank.account.entity.Account;
+import fr.miage.bank.account.exception.AccountAlreadyExistException;
 import fr.miage.bank.account.exception.AccountNotFoundException;
 import fr.miage.bank.account.resource.AccountResource;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,12 @@ public class AccountServiceBean implements AccountService {
     }
 
     @Override
-    public Account create(Account a) {
+    public Account create(Account a) throws AccountAlreadyExistException {
+
+        if (ar.findByEmail(a.getEmail()) != null) {
+            throw new AccountAlreadyExistException("The account with the mail " + a.getEmail() + " already exists!");
+        }
+
         a.setId(UUID.randomUUID().toString());
         a.setAccountNumber(generateAccountNumber());
         a.setCardNumber(generateCardNumber());
@@ -76,11 +82,8 @@ public class AccountServiceBean implements AccountService {
     }
 
     private String generateCardNumber() {
-        String cardNumber = (random.nextInt() * 9000 + 1000) + "";
-        cardNumber += (random.nextInt() * 9000 + 1000) + "";
-        cardNumber += (random.nextInt() * 9000 + 1000) + "";
-        cardNumber += (random.nextInt() * 9000 + 1000) + "";
-        return cardNumber;
+        // Generate Card number like 1234 5678 9012 3456
+        return (random.nextInt(9000) + 1000) + "-" + (random.nextInt(9000) + 1000) + "-" + (random.nextInt(9000) + 1000) + "-" + (random.nextInt(9000) + 1000);
     }
 
     private String generateCardType() {
@@ -92,6 +95,7 @@ public class AccountServiceBean implements AccountService {
     }
 
     private String generateCardCvv() {
-        return (random.nextInt() * 1000) + "";
+        // Generate a random 3 digits number between 100 and 999
+        return (random.nextInt(900) + 100) + "";
     }
 }
