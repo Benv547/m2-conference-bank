@@ -27,10 +27,10 @@ public class AccountServiceBean implements AccountService {
     private static final Random random = new SecureRandom();
 
     @Override
-    public Account get(String email, String firstname, String lastname) throws AccountNotFoundException {
-        Account a = ar.findByEmail(email);
+    public Account get(String cardNumber) throws AccountNotFoundException {
+        Account a = ar.findByCardNumber(cardNumber);
         if (a == null) {
-            throw new AccountNotFoundException("The account with the email " + email + " does not exist!");
+            throw new AccountNotFoundException("The account with the card number " + cardNumber + " does not exist!");
         }
         return a;
     }
