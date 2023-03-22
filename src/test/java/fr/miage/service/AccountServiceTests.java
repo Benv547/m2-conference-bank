@@ -11,12 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest()
-public class AccountServiceTests {
+class AccountServiceTests {
 
     @MockBean
     AccountResource ar;
@@ -47,7 +46,7 @@ public class AccountServiceTests {
         Account a2 = as.get(account.getCardNumber());
 
         // ASSERT
-        assertTrue(account.getAccountNumber().equals(a2.getAccountNumber()));
+        assertEquals(account.getAccountNumber(), (a2.getAccountNumber()));
     }
 
     @Test

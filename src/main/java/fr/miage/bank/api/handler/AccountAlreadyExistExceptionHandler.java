@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class AccountAlreadyExistExceptionHandler {
 
     @ExceptionHandler(AccountAlreadyExistException.class)
-    public ResponseEntity<?> handleConstraintViolationException(AccountAlreadyExistException e) {
+    public ResponseEntity<Object> handleConstraintViolationException(AccountAlreadyExistException e) {
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 }
