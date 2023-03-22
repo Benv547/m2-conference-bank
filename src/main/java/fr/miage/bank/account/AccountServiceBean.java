@@ -1,6 +1,7 @@
 package fr.miage.bank.account;
 
 import fr.miage.bank.account.entity.Account;
+import fr.miage.bank.account.enumeration.ExceptionMessagesEnum;
 import fr.miage.bank.account.exception.AccountAlreadyExistException;
 import fr.miage.bank.account.exception.AccountNotFoundException;
 import fr.miage.bank.account.resource.AccountResource;
@@ -30,7 +31,7 @@ public class AccountServiceBean implements AccountService {
     public Account get(String cardNumber) throws AccountNotFoundException {
         Account a = ar.findByCardNumber(cardNumber);
         if (a == null) {
-            throw new AccountNotFoundException("The account with the card number " + cardNumber + " does not exist!");
+            throw new AccountNotFoundException(ExceptionMessagesEnum.ACCOUNT_NOT_FOUND.getMessage());
         }
         return a;
     }
@@ -39,7 +40,7 @@ public class AccountServiceBean implements AccountService {
     public Account create(Account a) throws AccountAlreadyExistException {
 
         if (ar.findByEmail(a.getEmail()) != null) {
-            throw new AccountAlreadyExistException("The account with the mail " + a.getEmail() + " already exists!");
+            throw new AccountAlreadyExistException(ExceptionMessagesEnum.ACCOUNT_ALREADY_EXIST.getMessage());
         }
 
         a.setId(UUID.randomUUID().toString());
@@ -57,7 +58,7 @@ public class AccountServiceBean implements AccountService {
     public float withdraw(String cardNumber, float amount) throws AccountNotFoundException {
         Account a = ar.findByCardNumber(cardNumber);
         if (a == null) {
-            throw new AccountNotFoundException("The account with the card number " + cardNumber + " does not exist!");
+            throw new AccountNotFoundException(ExceptionMessagesEnum.ACCOUNT_NOT_FOUND.getMessage());
         }
 
         a.setBalance(a.getBalance() - amount);
@@ -69,7 +70,7 @@ public class AccountServiceBean implements AccountService {
     public float deposit(String cardNumber, float amount) throws AccountNotFoundException {
         Account a = ar.findByCardNumber(cardNumber);
         if (a == null) {
-            throw new AccountNotFoundException("The account with the card number " + cardNumber + " does not exist!");
+            throw new AccountNotFoundException(ExceptionMessagesEnum.ACCOUNT_NOT_FOUND.getMessage());
         }
 
         a.setBalance(a.getBalance() + amount);

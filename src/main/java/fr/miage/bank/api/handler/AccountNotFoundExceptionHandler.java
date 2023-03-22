@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class AccountNotFoundExceptionHandler {
 
     @ExceptionHandler(AccountNotFoundException.class)
-    public ResponseEntity<?> handleConstraintViolationException(AccountNotFoundException e) {
+    public ResponseEntity<Object> handleConstraintViolationException(AccountNotFoundException e) {
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 }

@@ -48,14 +48,14 @@ public class AccountController {
 
     @PostMapping(value = "/withdraw/{cardNumber}/{amount}")
     @Transactional
-    public ResponseEntity withdraw(@PathVariable("cardNumber") String cardNumber, @PathVariable("amount") float amount) throws AccountNotFoundException {
+    public ResponseEntity<Object> withdraw(@PathVariable("cardNumber") String cardNumber, @PathVariable("amount") float amount) throws AccountNotFoundException {
         service.withdraw(cardNumber, amount);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping(value = "/deposit/{cardNumber}/{amount}")
     @Transactional
-    public ResponseEntity deposit(@PathVariable("cardNumber") String cardNumber, @PathVariable("amount") float amount) throws AccountNotFoundException {
+    public ResponseEntity<Object> deposit(@PathVariable("cardNumber") String cardNumber, @PathVariable("amount") float amount) throws AccountNotFoundException {
         service.deposit(cardNumber, amount);
         return ResponseEntity.noContent().build();
     }
