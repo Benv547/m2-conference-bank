@@ -38,14 +38,13 @@ public class AccountServiceTests {
         account.setFirstname(firstname);
         account.setLastname(lastname);
         account.setBalance(0);
+        account.setCardNumber("123");
         account.setAccountNumber("123");
 
-        ar.save(account);
-
         // ACT
-        when(ar.findByEmail(Mockito.anyString()))
+        when(ar.findByCardNumber(Mockito.anyString()))
                 .thenReturn(account);
-        Account a2 = as.get(email, firstname, lastname);
+        Account a2 = as.get(account.getCardNumber());
 
         // ASSERT
         assertTrue(account.getAccountNumber().equals(a2.getAccountNumber()));
